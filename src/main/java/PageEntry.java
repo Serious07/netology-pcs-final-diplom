@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PageEntry implements Comparable<PageEntry> {
+public class PageEntry implements Comparable<PageEntry>, Serializable {
     private final String pdfName;
     private final int page;
     private final int count;
@@ -27,9 +28,9 @@ public class PageEntry implements Comparable<PageEntry> {
     public int compareTo(PageEntry o) {
         if (o.getCount() == getCount()) {
             return 0;
-        } else if (o.getCount() > getCount()){
+        } else if (o.getCount() > getCount()) {
             return 1;
-        } else if(o.getCount() < getCount()){
+        } else if (o.getCount() < getCount()) {
             return -1;
         }
 
@@ -51,7 +52,7 @@ public class PageEntry implements Comparable<PageEntry> {
 
     @Override
     public String toString() {
-        return "PageEntry{pdf="+ getPdfName() +
+        return "PageEntry{pdf=" + getPdfName() +
                 ", page=" + getPage() +
                 ", count=" + getCount() +
                 "}";

@@ -23,7 +23,7 @@ public class BooleanSearchEngine implements SearchEngine {
                 .map(Path::toFile)
                 .collect(Collectors.toList());
 
-        for (File pdfFile : files){
+        for (File pdfFile : files) {
             getWordsFromPage(pdfFile);
         }
     }
@@ -31,7 +31,7 @@ public class BooleanSearchEngine implements SearchEngine {
     private void getWordsFromPage(File pdfFile) throws IOException {
         PdfDocument doc = new PdfDocument(new PdfReader(pdfFile));
 
-        for(int pageNumber = 1; pageNumber < doc.getNumberOfPages(); pageNumber++){
+        for (int pageNumber = 1; pageNumber < doc.getNumberOfPages(); pageNumber++) {
             PdfPage page = doc.getPage(pageNumber);
             String textFromPage = PdfTextExtractor.getTextFromPage(page);
             String[] pageWords = textFromPage.split("\\P{IsAlphabetic}+");
@@ -40,7 +40,7 @@ public class BooleanSearchEngine implements SearchEngine {
 
             Map<String, Integer> wordsFrequency = getWordFrequency(pageWords);
 
-            for(String word : pageWords){
+            for (String word : pageWords) {
                 setPageEntryForWord(word, wordsFrequency, pageNumber, pdfFile);
             }
         }
@@ -48,7 +48,8 @@ public class BooleanSearchEngine implements SearchEngine {
 
     private List<PageEntry> pagesEntryForWord;
     private List<PageEntry> sortedPageEntry;
-    private void setPageEntryForWord(String word, Map<String, Integer> wordsFrequency, int pageNumber, File pdfFile){
+
+    private void setPageEntryForWord(String word, Map<String, Integer> wordsFrequency, int pageNumber, File pdfFile) {
         if (!wordsFrequency.containsKey(word)) return;
         PageEntry pageEntry = new PageEntry(pdfFile.getName(), pageNumber, wordsFrequency.get(word));
         if (allEntry.containsValue(pageEntry)) return;
@@ -56,7 +57,7 @@ public class BooleanSearchEngine implements SearchEngine {
         if (allEntry.containsKey(word)) {
             pagesEntryForWord = allEntry.get(word);
 
-            if(pagesEntryForWord.contains(pageEntry)) return;
+            if (pagesEntryForWord.contains(pageEntry)) return;
 
             pagesEntryForWord.add(pageEntry);
 
@@ -74,9 +75,9 @@ public class BooleanSearchEngine implements SearchEngine {
         }
     }
 
-    private Map<String, Integer> getWordFrequency(String[] words){
-        Map<String, Integer> frequency = new HashMap<>(); // мапа, где ключом будет слово, а значением - частота
-        for (var word : words) { // перебираем слова
+    private Map<String, Integer> getWordFrequency(String[] words) {
+        Map<String, Integer> frequency = new HashMap<>();
+        for (var word : words) {
             if (word.isEmpty()) {
                 continue;
             }
@@ -86,10 +87,10 @@ public class BooleanSearchEngine implements SearchEngine {
         return frequency;
     }
 
-    private List<String> allWordsToLowerCase(String[] words){
+    private List<String> allWordsToLowerCase(String[] words) {
         List<String> result = Arrays.stream(words).
-                                    peek(word -> word.toLowerCase()).
-                                    collect(Collectors.<String>toList());
+                peek(word -> word.toLowerCase()).
+                collect(Collectors.<String>toList());
 
         return result;
     }
