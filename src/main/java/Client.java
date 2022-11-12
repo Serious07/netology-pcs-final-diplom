@@ -19,15 +19,14 @@ public class Client {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
                 String currentCommand = reader.readLine();
-                String[] subSplitCommand = currentCommand.split(" ");
 
                 if (currentCommand.equalsIgnoreCase("end") ||
                         currentCommand.equalsIgnoreCase("exit") ||
                         currentCommand.equalsIgnoreCase("quit")) {
                     System.out.println("Программа остановлена");
                     break;
-                } else if (subSplitCommand.length >= 1) {
-                    out.println(subSplitCommand[0]);
+                } else {
+                    out.println(currentCommand);
                     System.out.println("Ответ от сервера:");
                     System.out.println(in.readLine());
                 }
