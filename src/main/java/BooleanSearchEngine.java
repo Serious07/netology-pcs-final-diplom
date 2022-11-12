@@ -46,30 +46,27 @@ public class BooleanSearchEngine implements SearchEngine {
         }
     }
 
-    private List<PageEntry> pagesEntryForWord;
-    private List<PageEntry> sortedPageEntry;
-
     private void setPageEntryForWord(String word, Map<String, Integer> wordsFrequency, int pageNumber, File pdfFile) {
         if (!wordsFrequency.containsKey(word)) return;
         PageEntry pageEntry = new PageEntry(pdfFile.getName(), pageNumber, wordsFrequency.get(word));
         if (allEntry.containsValue(pageEntry)) return;
 
         if (allEntry.containsKey(word)) {
-            pagesEntryForWord = allEntry.get(word);
+            List<PageEntry> pagesEntryForWord = allEntry.get(word);
 
             if (pagesEntryForWord.contains(pageEntry)) return;
 
             pagesEntryForWord.add(pageEntry);
 
             // Сортируем
-            sortedPageEntry = pagesEntryForWord.
+            List<PageEntry> sortedPageEntry = pagesEntryForWord.
                     stream().
                     sorted().
                     collect(Collectors.toList());
 
             allEntry.put(word, sortedPageEntry);
         } else {
-            pagesEntryForWord = new ArrayList<>();
+            List<PageEntry> pagesEntryForWord = new ArrayList<>();
             pagesEntryForWord.add(pageEntry);
             allEntry.put(word, pagesEntryForWord);
         }
@@ -98,6 +95,6 @@ public class BooleanSearchEngine implements SearchEngine {
     @Override
     public List<PageEntry> search(String word) {
         // тут реализуйте поиск по слову
-        return allEntry.get(word);
+        return allEntry.get(word.toLowerCase());
     }
 }
